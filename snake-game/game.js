@@ -104,17 +104,14 @@ function update() {
     
     // Calculate new head
     const head = snake[0];
-    const newHead = {
+    let newHead = {
         x: head.x + direction.x,
         y: head.y + direction.y
     };
     
-    // Check wall collision
-    if (newHead.x < 0 || newHead.x >= tileCount || 
-        newHead.y < 0 || newHead.y >= tileCount) {
-        endGame();
-        return;
-    }
+    // Wrap around walls (torus/wraparound mode)
+    newHead.x = (newHead.x + tileCount) % tileCount;
+    newHead.y = (newHead.y + tileCount) % tileCount;
     
     // Check self collision
     if (snake.some(segment => segment.x === newHead.x && segment.y === newHead.y)) {
