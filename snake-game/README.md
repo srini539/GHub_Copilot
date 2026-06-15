@@ -5,11 +5,13 @@ A classic Snake game built with HTML5 Canvas and Vanilla JavaScript. Play in you
 ## Features
 
 - 🎮 **Classic Gameplay** - Eat food to grow and avoid hitting walls or yourself
+- 🧱 **Obstacles** - Navigate around 4 orange obstacles placed randomly on the map
 - 📊 **Score Tracking** - Keeps track of your current score and high score (saved in localStorage)
 - ⚡ **Progressive Difficulty** - Game speeds up as your score increases
 - 🎨 **Responsive Design** - Works on desktop and mobile devices
 - ⏸️ **Pause/Resume** - Pause the game at any time
 - 🎯 **Smooth Controls** - Use arrow keys or WASD to move
+- 🔄 **Wall Wraparound** - Exit one side and enter from the opposite side
 
 ## How to Play
 
@@ -17,8 +19,12 @@ A classic Snake game built with HTML5 Canvas and Vanilla JavaScript. Play in you
 2. **Click "Start Game"** to begin
 3. **Use Arrow Keys** or **WASD** to move the snake
 4. **Eat the red food** to grow and earn points (10 points per food)
-5. **Avoid hitting** the walls or your own tail
-6. **Try to beat your high score!**
+5. **Avoid hitting:**
+   - Your own tail
+   - Orange obstacles (instant game over)
+   - Note: You can pass through walls and wrap around to the other side
+6. **Navigate obstacles** strategically to reach the food
+7. **Try to beat your high score!**
 
 ## Project Structure
 
@@ -55,8 +61,10 @@ snake-game/
 ## Game Mechanics
 
 - **Snake Movement**: Snake moves continuously in the last pressed direction
-- **Food**: Appears randomly on the grid (never on the snake)
-- **Collision**: Game ends if snake hits the wall or itself
+- **Food**: Appears randomly on the grid (never on the snake or obstacles)
+- **Obstacles**: 4 orange obstacles are randomly placed at the start (instant game over if touched)
+- **Collision**: Game ends if snake hits itself or obstacles
+- **Wall Wraparound**: Exit one side and enter from the opposite side
 - **Growth**: Snake grows when eating food
 - **Speed**: Game speed increases every 50 points
 - **High Score**: Automatically saved to browser storage

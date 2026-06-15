@@ -6,6 +6,7 @@ const tileCount = canvas.width / gridSize;
 
 let snake = [{ x: 10, y: 10 }];
 let food = { x: 15, y: 15 };
+let obstacles = [];
 let direction = { x: 1, y: 0 };
 let nextDirection = { x: 1, y: 0 };
 let score = 0;
@@ -75,6 +76,7 @@ function resetGame() {
     startBtn.textContent = 'Start Game';
     pauseBtn.textContent = 'Pause';
     generateFood();
+    generateObstacles();
     draw();
 }
 
@@ -96,6 +98,30 @@ function generateFood() {
     food = newFood;
 }
 
+function generateObstacles() {
+    obstacles = [];
+    const numObstacles = 4; // 3-5 obstacles
+    
+    for (let i = 0; i < numObstacles; i++) {
+        let obstacleOnSnake = true;
+        let newObstacle;
+        
+        while (obstacleOnSnake) {
+            newObstacle = {
+                x: Math.floor(Math.random() * tileCount),
+                y: Math.floor(Math.random() * tileCount)
+            };
+            
+            // Check if obstacle position is on snake or food
+            obstacleOnSnake = snake.some(segment => 
+                segment.x === newObstacle.x && segment.y === newObstacle.y
+            ) || (newObstacle.x === food.x && newObstacle.y === food.y);
+        }
+        
+        obstacles.push(newObstacle);
+    }
+}
+
 function update() {
     if (gamePaused || !gameActive) return;
     
@@ -115,6 +141,12 @@ function update() {
     
     // Check self collision
     if (snake.some(segment => segment.x === newHead.x && segment.y === newHead.y)) {
+        endGame();
+        return;
+    }
+    
+    // Check obstacle collision
+    if (obstacles.some(obstacle => obstacle.x === newHead.x && obstacle.y === newHead.y)) {
         endGame();
         return;
     }
@@ -174,6 +206,17 @@ function draw() {
     );
     ctx.fill();
     
+    // Draw obstacles
+    ctx.fillStyle = '#ff9500';
+    obstacles.forEach(obstacle => {
+        ctx.fillRect(
+            obstacle.x * gridSize + 1,
+            obstacle.y * gridSize + 1,
+            gridSize - 2,
+            gridSize - 2
+        );
+    });
+    
     // Draw grid (optional - for visual clarity)
     ctx.strokeStyle = '#333';
     ctx.lineWidth = 0.5;
@@ -215,4 +258,5 @@ function gameLoop() {
 }
 
 // Start the game loop
+generateObstacles();
 gameLoop();
