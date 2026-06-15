@@ -12,7 +12,7 @@ let score = 0;
 let highScore = localStorage.getItem('snakeHighScore') || 0;
 let gameActive = false;
 let gamePaused = false;
-let gameSpeed = 100; // milliseconds
+let gameSpeed = 150; // milliseconds
 
 // DOM Elements
 const scoreDisplay = document.getElementById('score');
@@ -54,7 +54,6 @@ function startGame() {
         gamePaused = false;
         startBtn.textContent = 'Restart';
         pauseBtn.textContent = 'Pause';
-        gameLoop();
     }
 }
 
@@ -62,9 +61,6 @@ function togglePause() {
     if (gameActive) {
         gamePaused = !gamePaused;
         pauseBtn.textContent = gamePaused ? 'Resume' : 'Pause';
-        if (!gamePaused) {
-            gameLoop();
-        }
     }
 }
 
@@ -135,7 +131,7 @@ function update() {
         generateFood();
         
         // Increase speed slightly as score increases
-        gameSpeed = Math.max(50, 100 - Math.floor(score / 50));
+        gameSpeed = Math.max(75, 150 - Math.floor(score / 50));
     } else {
         snake.pop();
     }
@@ -212,14 +208,14 @@ function endGame() {
 }
 
 function gameLoop() {
-    if (!gamePaused && gameActive) {
-        update();
-        draw();
-        setTimeout(gameLoop, gameSpeed);
-    } else if (gameActive && gamePaused) {
+    if (gameActive) {
+        if (!gamePaused) {
+            update();
+        }
         draw();
     }
+    setTimeout(gameLoop, gameSpeed);
 }
 
-// Initial draw
-draw();
+// Start the game loop
+gameLoop();
